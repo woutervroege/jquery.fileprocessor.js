@@ -1,4 +1,3 @@
-<?php
 /*
     * @package jquery.fileprocessor.js
     * @copyright (©) 2013 Wouter Vroege <wouter AT woutervroege DOT nl>
