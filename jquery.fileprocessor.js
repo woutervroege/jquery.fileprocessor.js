@@ -55,6 +55,10 @@
                 options.onItem(imageData, imageProcessor.numProcessed, imageProcessor.numItems);
                 if (imageProcessor.numProcessed === imageProcessor.numItems) {
                     options.onEnd(imageProcessor.processedData);
+                    imageProcessor.data = [];
+                    imageProcessor.processedData = [];
+                    imageProcessor.numItems = 0;
+                    imageProcessor.numProcessed = 0;
                 }
                 processImage(imageProcessor.data[imageProcessor.numProcessed]);
             }

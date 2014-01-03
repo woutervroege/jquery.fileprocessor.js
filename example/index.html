@@ -3,10 +3,10 @@
     <head>
         <title>Jquery file processor - by Wouter Vroege</title>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="style.css" type="text/css"/>
-        <link rel="stylesheet" href="blackboard.css" type="text/css"/>
+        <link rel="stylesheet" href="css/style.css" type="text/css"/>
+        <link rel="stylesheet" href="css/blackboard.css" type="text/css"/>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-        <script src="rainbow-custom.min.js"></script>
+        <script src="js/rainbow-custom.min.js"></script>
         <script src="../jquery.fileprocessor.js"></script>
 
     </head>
@@ -14,11 +14,18 @@
 
     <h3>jQuery.fileprocessor.js - by Wouter Vroege</h3>
 
-    <input type="file" multiple/>
+    <input type="file" multiple id="image-uploader" accept="image/*"/>
     <p>
-
     <pre>
-    <code data-language="javascript"></code>
+    <code data-language="javascript" rel="example1"></code>
+    </pre>
+
+    <p id="images"></p>
+
+    <input type="file" multiple id="file-uploader"/>
+    <p>
+    <pre>
+    <code data-language="javascript" rel="example2"></code>
     </pre>
 
     <br>
@@ -27,22 +34,35 @@
     <script>
     $(document).ready(function() {
         $("code").each(function() {
-            $(this).html($("script[rel=processor-example]").html());
+            $(this).html($("script[rel="+$(this).attr("rel")+"]").html());
         });
     })
     </script>
 
-    <script rel="processor-example">
-        $("input[type=file]").fileprocessor({
-            /* resize images client-side */
+    <script rel="example1" type="text/javascript">
+        $("#image-uploader").fileprocessor({
             maxImageSize: 600,
-            /* event triggered once a single item is ready (object) */
-            onItem: function(item, numProcessed, total) {
-                console.log(numProcessed + " of " + total);
+            onItem: function(item) {
+                var img = $('<img src="'+item.data+'"/>');
+                $("#images").append(img);
             },
-            /* event triggered once all items are ready (array of objects) */
             onEnd: function(data) {
                 alert("all items processed...");
+            }
+        });
+    </script>
+
+    <script rel="example2" type="text/javascript">
+        $("#file-uploader").fileprocessor({
+            maxImageSize: 800,
+            onItem: function(item, numProcessed, total) {
+                console.log(numProcessed + ' of ' + total + ', saving...');
+                $.post('saveFile.php', item, function() {
+                    console.log('file saved!');
+                });
+            },
+            onEnd: function(data) {
+                alert('all items processed...');
             }
         });
     </script>
